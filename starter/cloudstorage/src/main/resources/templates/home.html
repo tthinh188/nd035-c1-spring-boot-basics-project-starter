@@ -87,11 +87,15 @@
                         <tbody>
                         <tr th:each="note: ${noteList}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <button type="button" class="btn btn-success"
+                                        th:onclick="editNote([[${note}]])"
+                                >Edit</button>
+                                <a class="btn btn-danger"
+                                   th:href="@{/notes/delete?noteId={noteId}(noteId=${note.noteId})}"
+                                >Delete</a>
                             </td>
-                            <th scope="row">Example Note Title</th>
-                            <td>Example Note Description </td>
+                            <th scope="row" th:text="${note.noteTitle}">Example Note Title</th>
+                            <td th:text="${note.noteDescription}">Example Note Description </td>
                         </tr>
                         </tbody>
                     </table>
@@ -107,15 +111,39 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST">
-                                    <input type="hidden" name="noteId" id="note-id">
+                                <form
+                                        action="#"
+                                        method="POST"
+                                        th:action="@{/notes/note}"
+                                        th:object="${note}">
+
+                                    <input
+                                            type="hidden"
+                                            name="noteId"
+                                            th:field="*{noteId}"
+                                            id="note-id">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>
-                                        <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>
+                                        <input
+                                                type="text"
+                                                name="noteTitle"
+                                                class="form-control"
+                                                id="note-title"
+                                                maxlength="20"
+                                                th:field="*{noteTitle}"
+                                                required>
+
                                     </div>
                                     <div class="form-group">
                                         <label for="note-description" class="col-form-label">Description</label>
-                                        <textarea class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
+                                        <textarea
+                                                class="form-control"
+                                                name="noteDescription"
+                                                id="note-description"
+                                                rows="5" maxlength="1000"
+                                                th:field="*{noteDescription}"
+                                                required>
+                                        </textarea>
                                     </div>
                                     <button id="noteSubmit" type="submit" class="d-none"></button>
                                 </form>
@@ -217,6 +245,13 @@
                 $('#credential-username').val(username ? username : '');
                 $('#credential-password').val(password ? password : '');
                 $('#credentialModal').modal('show');
+            }
+
+            function editNote(note) {
+                $('#note-id').val(note.noteId);
+                $('#note-title').val(note.noteTitle);
+                $('#note-description').val(note.noteDescription);
+                $('#noteModal').modal('show');
             }
         </script>
 </body>
