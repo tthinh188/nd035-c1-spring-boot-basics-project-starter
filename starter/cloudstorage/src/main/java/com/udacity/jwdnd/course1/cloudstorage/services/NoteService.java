@@ -24,10 +24,8 @@ public class NoteService {
         if (note.getNoteId() == null || note.getNoteId().toString().equals("")) {
             Note addedNote = new Note(0 , note.getNoteTitle(), note.getNoteDescription(), user.getUserId());
             noteMapper.insert(addedNote);
-            System.out.println("size" + noteMapper.getNotesByUserId(user.getUserId()).size());
         }
         else {
-            System.out.println("update note");
             noteMapper.update(note.getNoteId(), note.getNoteTitle(), note.getNoteDescription());
         }
     }

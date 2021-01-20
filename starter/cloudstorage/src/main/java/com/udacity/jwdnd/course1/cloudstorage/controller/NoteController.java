@@ -31,10 +31,8 @@ public class NoteController {
     public String deleteNote(@ModelAttribute("note") Note note,
                              @RequestParam(required = false, name = "noteId") int noteId,
                              Authentication authentication) {
-        String userName = authentication.getPrincipal().toString();
-
         noteService.deleteNote(note);
-        return "redirect:/result?isSuccess=" + true;
 
+        return "redirect:/result?isSuccess=" + true;
     }
 }
