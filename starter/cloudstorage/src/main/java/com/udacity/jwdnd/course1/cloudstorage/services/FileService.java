@@ -41,8 +41,8 @@ public class FileService {
         fileMapper.insert(file);
     }
 
-    public File getFile(String fileName) {
-        return this.fileMapper.getFile(fileName);
+    public File getFileById(int fileId) {
+        return this.fileMapper.getFileById(fileId);
     }
 
     public Boolean deleteFile(Integer fileId) {
@@ -58,5 +58,6 @@ public class FileService {
         fileList = fileMapper.getAllFilesByUserId(userId);
         return fileList;
     }
+
 
 }

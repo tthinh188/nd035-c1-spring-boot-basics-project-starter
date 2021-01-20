@@ -1,12 +1,13 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
+import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -15,13 +16,21 @@ import java.util.Map;
 @Controller
 public class HomeController {
     FileService fileService;
+    NoteService noteService;
+//    CredentialService credentialService;
 
-    public HomeController(FileService fileService) { this.fileService = fileService; }
+    public HomeController(FileService fileService, NoteService noteService ) {
+        this.fileService = fileService;
+        this.noteService = noteService;
+//        this.credentialService = credentialService;
+    }
 
     @GetMapping("/home")
     public String getHomepage(Model model, User user, Authentication authentication) {
         String username = (String) authentication.getPrincipal();
         model.addAttribute("fileList", fileService.getFiles(fileService.getUserID(username)));
+        model.addAttribute("noteList", noteService.getNotes(fileService.getUserID(username)));
+
         return "home";
     }
 

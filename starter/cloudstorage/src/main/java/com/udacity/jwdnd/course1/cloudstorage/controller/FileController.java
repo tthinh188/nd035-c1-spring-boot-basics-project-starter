@@ -55,7 +55,6 @@ public class FileController {
             e.printStackTrace();
         }
         return "redirect:/result?isSuccess=" + true;
-
     }
 
     @GetMapping("/delete")
@@ -64,6 +63,23 @@ public class FileController {
         Boolean isSuccess = this.fileService.deleteFile(fileid);
 
         return "redirect:/result?isSuccess=" + isSuccess;
+    }
 
+    @GetMapping("download")
+    public ResponseEntity<InputStreamResource> viewFile(@RequestParam(required = false, name = "fileid") Integer fileid) {
+        File file = fileService.getFileById(fileid);
+        String fileName = file.getFileName();
+        String contentType = file.getContentType();
+//        String fileSize = file.getFileSize();
+        byte[] fileData = file.getFileData();
+
+        InputStream inputStream = new ByteArrayInputStream(fileData);
+
+        InputStreamResource resource = new InputStreamResource(inputStream);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
     }
 }
