@@ -29,8 +29,7 @@ public class NoteController {
 
     @GetMapping("/delete")
     public String deleteNote(@ModelAttribute("note") Note note,
-                             @RequestParam(required = false, name = "noteId") int noteId,
-                             Authentication authentication) {
+                             @RequestParam(required = false, name = "noteId") int noteId) {
         noteService.deleteNote(note);
 
         return "redirect:/result?isSuccess=" + true;
