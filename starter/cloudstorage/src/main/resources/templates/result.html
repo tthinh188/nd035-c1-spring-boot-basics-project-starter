@@ -24,9 +24,9 @@
                         to continue.
                     </span>
         </div>
-        <div class="alert alert-danger fill-parent" th:if="${not isSuccess} and ${errorType != duplicate}">
+        <div class="alert alert-danger fill-parent" th:unless="${isSuccess} and ${errorType == duplicate}">
             <h1 class="display-5">Error</h1>
-            <span>Your changes were not saved. Click <a th:href="@{/home}">here</a> to continue.</span>
+            <span>Your changes were not saved. Click <a id="continue-link" th:href="@{/home}">here</a> to continue.</span>
         </div>
 
     </div>

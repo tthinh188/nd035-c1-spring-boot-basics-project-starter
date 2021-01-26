@@ -6,11 +6,13 @@ import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -21,15 +23,17 @@ public class HomeController {
     FileService fileService;
     NoteService noteService;
     CredentialService credentialService;
+    UserService userService;
 
-    public HomeController(FileService fileService, NoteService noteService, CredentialService credentialService ) {
+    public HomeController(FileService fileService, NoteService noteService, CredentialService credentialService, UserService userService ) {
         this.fileService = fileService;
         this.noteService = noteService;
         this.credentialService = credentialService;
+        this.userService = userService;
     }
 
     @GetMapping("/home")
-    public String getHomepage(
+    public String homePage(
             @ModelAttribute("note") Note note,
             @ModelAttribute("credential") Credential credential,
             Model model, Authentication authentication) {
@@ -37,17 +41,16 @@ public class HomeController {
         model.addAttribute("fileList", fileService.getFiles(fileService.getUserID(username)));
         model.addAttribute("noteList", noteService.getNotes(fileService.getUserID(username)));
         model.addAttribute("credentialList", credentialService.getCredentialList(fileService.getUserID(username)));
-
         return "home";
-    }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
     }
 
     @GetMapping("/logout")
     public String logOut( ) {
+        return "login";
+    }
+
+    @GetMapping("/login")
+    public String loginPage( ) {
         return "login";
     }
 

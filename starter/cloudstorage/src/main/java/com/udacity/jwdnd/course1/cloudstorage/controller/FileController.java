@@ -44,7 +44,7 @@ public class FileController {
         for (File file: userFiles) {
             if (file.getFileName().equals(fileUpload.getOriginalFilename())) {
                 model.addAttribute("isSuccess", false);
-                return "redirect:/result?isSuccess=" + false + "&errorType= duplicate";
+                return "redirect:/result?isSuccess=" + false + "&errorType=duplicate";
             }
         }
 
@@ -59,9 +59,7 @@ public class FileController {
 
     @GetMapping("/delete")
     public String deleteFile(@RequestParam(required = false, name = "fileid") Integer fileid) {
-
         Boolean isSuccess = this.fileService.deleteFile(fileid);
-
         return "redirect:/result?isSuccess=" + isSuccess;
     }
 
@@ -70,7 +68,6 @@ public class FileController {
         File file = fileService.getFileById(fileid);
         String fileName = file.getFileName();
         String contentType = file.getContentType();
-//        String fileSize = file.getFileSize();
         byte[] fileData = file.getFileData();
 
         InputStream inputStream = new ByteArrayInputStream(fileData);
@@ -82,4 +79,5 @@ public class FileController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
     }
+
 }
