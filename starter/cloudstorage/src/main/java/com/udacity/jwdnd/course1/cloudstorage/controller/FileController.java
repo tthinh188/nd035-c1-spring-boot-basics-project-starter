@@ -24,6 +24,7 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
     private FileService fileService;
+    private final long MAXIMUM_FILE_SIZE = 134217728;
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
@@ -34,8 +35,12 @@ public class FileController {
                               Authentication authentication, Model model) {
 
         if (fileUpload.isEmpty()) {
-            model.addAttribute("isSuccess", false);
-            return "redirect:/result?isSuccess=" + false + "&errorType= empty";
+            return "redirect:/result?isSuccess=" + false + "&errorType=" + "no-file-selected";
+        }
+
+        if (fileUpload.getSize() > MAXIMUM_FILE_SIZE) {
+            System.out.println("Stop it right here");
+            return "redirect:/result?isSuccess=" + false + "&errorType=" + "file-size-limit-exceeded";
         }
 
         String username = (String) authentication.getPrincipal();
@@ -43,8 +48,7 @@ public class FileController {
         List<File> userFiles = fileService.getFiles(userId);
         for (File file: userFiles) {
             if (file.getFileName().equals(fileUpload.getOriginalFilename())) {
-                model.addAttribute("isSuccess", false);
-                return "redirect:/result?isSuccess=" + false + "&errorType=duplicate";
+                return "redirect:/result?isSuccess=" + false + "&errorType=" + "file-exists";
             }
         }
 

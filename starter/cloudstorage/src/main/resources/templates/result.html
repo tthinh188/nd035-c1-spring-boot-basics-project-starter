@@ -24,11 +24,20 @@
                         to continue.
                     </span>
         </div>
-        <div class="alert alert-danger fill-parent" th:unless="${isSuccess} and ${errorType == duplicate}">
+        <div class="alert alert-danger fill-parent" th:if="${not isSuccess} and ${errorType} == file-exists">
             <h1 class="display-5">Error</h1>
-            <span>Your changes were not saved. Click <a id="continue-link" th:href="@{/home}">here</a> to continue.</span>
+            <span>File exists, your changes were not saved. Click <a id="continue-link" th:href="@{/home}">here</a> to continue.</span>
         </div>
 
+        <div class="alert alert-danger fill-parent" th:if="${not isSuccess} and ${errorType} == no-file-selected">
+            <h1 class="display-5">Error</h1>
+            <span>No file selected, your changes were not saved. Click <a th:href="@{/home}">here</a> to continue.</span>
+        </div>
+
+        <div class="alert alert-danger fill-parent" th:if="${not isSuccess} and ${errorType} == file-size-limit-exceeded">
+            <h1 class="display-5">Error</h1>
+            <span>File size limit exceeded, your changes were not saved. Require less than 128MB size. Click <a th:href="@{/home}">here</a> to continue.</span>
+        </div>
     </div>
 </body>
 </html>

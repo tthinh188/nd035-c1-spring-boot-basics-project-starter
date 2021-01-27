@@ -9,9 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePage {
-    @FindBy(css="#logout-button")
-    private WebElement logoutButton;
-
     @FindBy(id="nav-notes-tab")
     private WebElement notesTab;
     @FindBy(id="nav-credentials-tab")
@@ -59,9 +56,6 @@ public class HomePage {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void logout() {
-       logoutButton.click();
-    }
 
     public void openNoteTab(WebDriverWait webDriverWait) {
         webDriverWait.until(ExpectedConditions.elementToBeClickable(notesTab));

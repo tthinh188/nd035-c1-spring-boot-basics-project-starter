@@ -2,8 +2,11 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -63,12 +66,20 @@ public class LoginAndSignupTest {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(username, password);
 
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("signup-link")));
+
         Assertions.assertEquals("Home", driver.getTitle());
 
-        HomePage homePage = new HomePage(driver);
-        homePage.logout();
+        WebElement logoutButton = driver.findElement(By.id("signup-link"));
 
-        Assertions.assertEquals(baseURL + "/home", driver.getCurrentUrl());
+        while(driver.getTitle().equals("Home")) {
+            logoutButton.click();
+        }
+
+        webDriverWait.until(ExpectedConditions.titleContains("Login"));
+
+        Assertions.assertEquals("Login",driver.getTitle());
+
 
     }
 }
